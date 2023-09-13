@@ -9,12 +9,13 @@ export default async function () {
   const apiDetails: {[key: string]: any} = await getApiDetails();
 
   if (apiList.length > 1) { // If we want to test endpoints in batch
+    console.log('>>>> In batch');
     const batch: BatchRequest[] = [];
 
     // Prepare the data
     apiList.forEach((api) => {
       const { apiUrl, headers } = apiDetails[api];
-      batch.push(['GET', apiUrl, null, { headers }]);
+      batch.push(['GET', apiUrl, null, { headers, tags: { tag: api } }]);
     });
 
     // Start bombarding
