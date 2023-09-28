@@ -5,7 +5,14 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 import { ROLES } from "../../enums/role.enum";
 
-export { options } from "../../config/stress.config";
+// export { options } from "../../config/stress.config";
+
+const getOptions = () => {
+  const type = __ENV.TYPE;
+  if (type) return require(`../../config/${type}.config`);
+  return null;
+}
+export const { options } = getOptions();
 
 export async function setup() {
   return getAuthDetails(ROLES.TEACHER);

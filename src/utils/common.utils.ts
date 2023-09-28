@@ -12,7 +12,7 @@ export const getAuthDetails = async (role: ROLES) => {
   };
 
   const username = (
-    role === ROLES.TEACHER ? process.env.AUTH_TEACHER :
+    role === ROLES.TEACHER ? process.env.AUTH_TEACHER_USER :
     role === ROLES.SCHOOL_ADMIN ? process.env.AUTH_SCHOOL_ADMIN_USER :
     process.env.AUTH_ADMIN_USER
   );
@@ -22,7 +22,7 @@ export const getAuthDetails = async (role: ROLES) => {
     username,
   };
 
-  const response = http.post(process.env.AUTH_URL!, JSON.stringify(body), params);
+  const response = http.post(process.env.AUTH_TOKEN_URL!, JSON.stringify(body), params);
   const data: any = response.json();
   return {
     token: data.AccessToken,
