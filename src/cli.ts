@@ -6,7 +6,8 @@ apiList.forEach((api) => {
   command += `& k6 run --out json=results.json ${__dirname}/endpoints/${api}.js `
 });
 
-console.log(command);
+const arguments1 = process.argv;
+console.log(arguments1);
 
 // exec(command, (err, res) => {
 //   console.log(err);

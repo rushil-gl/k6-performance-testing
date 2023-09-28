@@ -1,30 +1,31 @@
-import { getAuthDetails } from "../../../utils/common.utils";
+import { getAuthDetails } from "../../utils/common.utils";
 import { URLSearchParams } from 'https://jslib.k6.io/url/1.0.0/index.js';
 
 import http from "k6/http";
 import { check, sleep } from "k6";
+import { ROLES } from "../../enums/role.enum";
 
-export { options } from "../../../config/stress.config";
+export { options } from "../../config/stress.config";
 
-export default async function () {
+export async function setup() {
+  return getAuthDetails(ROLES.TEACHER);
+}
 
-  const { token, role } = await getAuthDetails();
+export default async function (data: any) {
   const searchParams = new URLSearchParams([
     ['schoolYearId', process.env.schoolYearId],
     ['curriculumId', process.env.curriculumId],
     ['districtId', process.env.districtId],
-    ['page', 1],
-    ['limit', 10]
   ]);
 
-  const apiUrl = `${process.env.url}/assessments/list?${searchParams.toString()}`;
+  const apiUrl = `${process.env.DOMAIN}/assessments/types?${searchParams.toString()}`;
   const params = {
     headers: {
       'Content-Type': 'application/json',
-      'Cookie': `user=${token};active_role=${role}`,
+      'Cookie': `user=${data.token};active_role=${ROLES.TEACHER}`,
     },
     tags: {
-      tag: 'assessments/list',
+      tag: 'assessments/types',
     },
   };
 
